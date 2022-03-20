@@ -11,40 +11,42 @@ const INITIAL_VALUES: FormData = {
     diseasesAmount: '',
     attributesAmount: '',
     periodsAmount: '',
-}
+};
 
 const Form: FC = () => {
     const { handleFormSubmit } = useService(AppController);
 
     return (
-        <Formik initialValues={INITIAL_VALUES} onSubmit={handleFormSubmit} >
+        <Formik initialValues={INITIAL_VALUES} onSubmit={handleFormSubmit}>
             <FormikForm>
                 <Wrapper>
                     <TextField
                         name="diseasesAmount"
                         type="number"
-                        label="Число классов"
+                        label="Введите количество классов"
                         variant="outlined"
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 1, max: 99, }}
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 1, max: 99 }}
                         required
                     />
                     <TextField
                         name="attributesAmount"
                         type="number"
-                        label="Число Признаков"
+                        label="Введите количество признаков"
                         variant="outlined"
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 1, max: 999, }}
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 1, max: 999 }}
                         required
                     />
                     <TextField
                         name="periodsAmount"
                         type="number"
-                        label="Число периодов динамики"
+                        label="Введите максимальное количество периодов динамики"
                         variant="outlined"
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 1, max: 5, }}
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 1, max: 5 }}
                         required
                     />
-                    <Button variant="contained" type="submit" color="primary" >Сгенерировать</Button>
+                    <Button variant="contained" type="submit" color="default">
+                        Сгенерировать базу знаний
+                    </Button>
                 </Wrapper>
             </FormikForm>
         </Formik>

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 export const Wrapper = styled.div`
     padding: 20px;
     margin: 0 auto;
-    width: 400px;
+    width: 700px;
     height: min-content;
     display: grid;
     grid-auto-flow: row;

@@ -1,15 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
+import { useEffect, useState } from 'react';
 import IndMoment from 'domain/entity/diseaseHistory/IndMoment';
 import MomentOfObservation from 'domain/entity/diseaseHistory/MomentOfObservation';
 import { useService } from 'presentation/context/Container';
 import AppController from 'presentation/controller/app/AppController';
-import Loader from 'presentation/component/common/block/Loader';
-import { Wrapper } from './styles';
 
-const IndKnowledgeGenerationButton: FC = () => {
+const IndKnowledgeGenerationButton: () => null = () => {
     const { setIndPeriods, diseaseHistories, setIndKnowledgeBaseStep } = useService(AppController);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const indMoments = diseaseHistories.map(
         ({ period: { disease, attribute }, momentsOfObservation, index }) =>
             new IndMoment(
@@ -36,21 +33,7 @@ const IndKnowledgeGenerationButton: FC = () => {
         }
     }, [isLoading]);
 
-    return (
-        <Wrapper>
-            {isLoading && <Loader />}
-            {!isLoading && (
-                <Button
-                    variant="contained"
-                    type="submit"
-                    color="primary"
-                    onClick={() => setIsLoading(true)}
-                >
-                    Сформировать
-                </Button>
-            )}
-        </Wrapper>
-    );
+    return null;
 };
 
 export default IndKnowledgeGenerationButton;

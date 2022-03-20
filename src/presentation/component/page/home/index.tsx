@@ -10,6 +10,7 @@ import Loader from 'presentation/component/common/block/Loader';
 import DiseaseHistoriesForm from './DiseaseHistoriesForm';
 import Form from './Form';
 import Tables from './Tables';
+import TablesStatistic from './TablesStatistic';
 import DiseaseHistoriesTable from './DiseaseHistoriesTable';
 import IndKnowledgeGenerationButton from './IndKnowledgeGenerationButton';
 
@@ -22,6 +23,7 @@ const HomePage = observer(() => {
         setShowDiseaseHistoriesStep,
         setIndKnowledgeBaseGenerationStep,
         setIndKnowledgeBaseStep,
+        setShowTablesStatisticStep,
         periods,
         hasHistories,
         hasIndPeriods,
@@ -48,6 +50,14 @@ const HomePage = observer(() => {
                     setIndKnowledgeBaseGenerationStep();
                 }
             }
+
+            if (newValue === 3) {
+                if (hasIndPeriods) {
+                    setShowTablesStatisticStep();
+                } else {
+                    setShowTablesStatisticStep();
+                }
+            }
         } else if (hasPeriods) {
             setShowTablesStep();
         } else {
@@ -60,12 +70,12 @@ const HomePage = observer(() => {
             <Tabs
                 value={value}
                 onChange={(_, selectedValue) => handleChange(selectedValue)}
-                textColor="primary"
                 indicatorColor="primary"
             >
-                <Tab label="База знаний" />
-                <Tab label="Выборка" disabled={!hasPeriods} />
-                <Tab label="Инд. База знаний" disabled={!hasHistories} />
+                <Tab label="Модельная база знаний" />
+                <Tab label="Список историй болезней" disabled={!hasPeriods} />
+                <Tab label="Восстановленная база знаний" disabled={!hasHistories} />
+                <Tab label="Статистика работы программы" disabled={!hasHistories} />
             </Tabs>
             {step === Step.InputData && <Form />}
             {step === Step.SampleGeneration && <DiseaseHistoriesForm />}
@@ -74,6 +84,7 @@ const HomePage = observer(() => {
             {step === Step.ShowDiseaseHistories && <DiseaseHistoriesTable />}
             {step === Step.LoadState && <Loader />}
             {step === Step.IndKnowledgeBaseGeneration && <IndKnowledgeGenerationButton />}
+            {step === Step.ShowTablesStatistic && <TablesStatistic />}
         </Layout>
     );
 });

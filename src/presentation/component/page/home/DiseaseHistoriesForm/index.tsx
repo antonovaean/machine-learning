@@ -21,13 +21,13 @@ const DiseaseHistoriesForm: FC = () => {
                     <TextField
                         name="diseaseHistoriesAmount"
                         type="number"
-                        label="Число историй болезней"
+                        label="Введите количество историй болезни для генерации"
                         variant="outlined"
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', min: 1, max: 9999 }}
                         required
                     />
-                    <Button variant="contained" type="submit" color="primary">
-                        Сгенерировать
+                    <Button variant="contained" type="submit" color="default">
+                        Сгенерировать истории болезни
                     </Button>
                 </Wrapper>
             </FormikForm>
