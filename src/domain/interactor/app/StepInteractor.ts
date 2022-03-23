@@ -38,8 +38,4 @@ export default class StepInteractor {
     public setIndKnowledgeBaseGenerationStep() {
         this.appRepository.setStep(Step.IndKnowledgeBaseGeneration);
     }
-
-    public setStatisticStep() {
-        this.appRepository.setStep(Step.Statistic);
-    }
 }
