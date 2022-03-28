@@ -5,6 +5,8 @@ export default class StatisticForPeriod {
         public readonly periodMBZ: number,
         public readonly periodIFBZ: number,
         public color: string = '',
-        public percent: number = 0,
+        public percentEquals: number = 0,
+        public percentMore: number = 0,
+        public percentLess: number = 0,
     ) {}
 }

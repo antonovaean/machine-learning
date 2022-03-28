@@ -14,13 +14,15 @@ import Row from './Row';
 import StatisticForPeriod from '../../../../../../domain/entity/period/StatisticForPeriod';
 
 interface Column {
-    id: 'value' | 'percent';
+    id: 'value' | 'percentEquals' | 'percentMore' | 'percentLess';
     label: string;
 }
 
 const COLUMNS: Column[] = [
     { id: 'value', label: 'Статистика для:' },
-    { id: 'percent', label: 'Процент совпадения ЧПД' },
+    { id: 'percentEquals', label: 'ЧПД(МБЗ)=ЧПД(ИФБЗ)' },
+    { id: 'percentMore', label: 'ЧПД(МБЗ)>ЧПД(ИФБЗ)' },
+    { id: 'percentLess', label: 'ЧПД(МБЗ)<ЧПД(ИФБЗ)' },
 ];
 
 const PeriodTable = observer(() => {
@@ -58,6 +60,8 @@ const PeriodTable = observer(() => {
     for (let i = 0; i < periods.length - 1; i++) {
         let countAttributes = 0;
         let correctPeriodToAttributes = 0;
+        let lessPeriodToAttributes = 0;
+        let morePeriodToAttributes = 0;
 
         if (i !== 0 && periods[i].disease === periods[i - 1].disease) {
             // eslint-disable-next-line no-continue
@@ -68,6 +72,10 @@ const PeriodTable = observer(() => {
             if (periods[i].disease === periods[i1].disease) {
                 if (periods[i1].amount === indPeriods[i1].amount) {
                     correctPeriodToAttributes++;
+                } else if (periods[i1].amount > indPeriods[i1].amount) {
+                    morePeriodToAttributes++;
+                } else if (periods[i1].amount < indPeriods[i1].amount) {
+                    lessPeriodToAttributes++;
                 }
             } else {
                 break;
@@ -79,10 +87,14 @@ const PeriodTable = observer(() => {
         }
 
         const percentToDisease = correctPeriodToAttributes / countAttributes;
+        const percentMoreToDisease = morePeriodToAttributes / countAttributes;
+        const percentLessToDisease = lessPeriodToAttributes / countAttributes;
 
         for (let i2 = i; i2 < periods.length; i2++) {
             if (periods[i].disease === periods[i2].disease) {
-                allDiseases[i2].percent = percentToDisease * 100;
+                allDiseases[i2].percentEquals = percentToDisease * 100;
+                allDiseases[i2].percentMore = percentMoreToDisease * 100;
+                allDiseases[i2].percentLess = percentLessToDisease * 100;
                 allDiseases[i2].color = colorDisease;
             } else {
                 break;
@@ -112,6 +124,8 @@ const PeriodTable = observer(() => {
     for (let j = 0; j < periods.length - 1; j++) {
         let countDisease = 0;
         let correctPeriodToDisease = 0;
+        let lessPeriodToDisease = 0;
+        let morePeriodToDisease = 0;
 
         if (j !== 0 && periods[j].attribute === periods[0].attribute) {
             // eslint-disable-next-line no-continue
@@ -122,6 +136,10 @@ const PeriodTable = observer(() => {
             if (periods[j].attribute === periods[j1].attribute) {
                 if (periods[j1].amount === indPeriods[j1].amount) {
                     correctPeriodToDisease++;
+                } else if (periods[j1].amount > indPeriods[j1].amount) {
+                    morePeriodToDisease++;
+                } else if (periods[j1].amount < indPeriods[j1].amount) {
+                    lessPeriodToDisease++;
                 }
                 countDisease++;
             }
@@ -132,16 +150,22 @@ const PeriodTable = observer(() => {
         }
 
         const percentToAttribute = correctPeriodToDisease / countDisease;
+        const percentMoreToAttribute = morePeriodToDisease / countDisease;
+        const percentLessToAttribute = lessPeriodToDisease / countDisease;
 
         for (let j2 = j; j2 < periods.length; j2++) {
             if (periods[j].attribute === periods[j2].attribute) {
-                allAttributes[j2].percent = percentToAttribute * 100;
+                allAttributes[j2].percentEquals = percentToAttribute * 100;
+                allAttributes[j2].percentMore = percentMoreToAttribute * 100;
+                allAttributes[j2].percentLess = percentLessToAttribute * 100;
                 allAttributes[j2].color = colorAttribute;
             }
         }
     }
 
     let generalPercent = 0;
+    let generalMorePercent = 0;
+    let generalLessPercent = 0;
     let count = 0;
 
     for (let j3 = 0; j3 < periods.length - 1; j3++) {
@@ -149,11 +173,15 @@ const PeriodTable = observer(() => {
             // eslint-disable-next-line no-continue
             break;
         }
-        generalPercent += allAttributes[j3].percent;
+        generalPercent += allAttributes[j3].percentEquals;
+        generalMorePercent += allAttributes[j3].percentMore;
+        generalLessPercent += allAttributes[j3].percentLess;
         count++;
     }
 
     generalPercent /= count;
+    generalMorePercent /= count;
+    generalLessPercent /= count;
 
     for (let j4 = 0; j4 < periods.length - 1; j4++) {
         if (j4 !== 0 && periods[j4].attribute === periods[0].attribute) {
@@ -166,11 +194,13 @@ const PeriodTable = observer(() => {
     periodsStatisticFromAttribute.unshift(
         new StatisticForPeriod(
             '0',
-            'Общий процент совпадений ЧПД',
+            'Всех записей',
             0,
             0,
             colorGeneral,
             generalPercent,
+            generalMorePercent,
+            generalLessPercent,
         ),
     );
 

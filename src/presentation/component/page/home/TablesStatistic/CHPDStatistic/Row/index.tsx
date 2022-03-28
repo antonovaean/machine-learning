@@ -9,12 +9,14 @@ type PropsT = {
 
 const Row: FC<PropsT> = (props) => {
     const { period } = props;
-    const { value, percent, color } = period;
+    const { value, percentEquals, color, percentMore, percentLess } = period;
 
     return (
         <TableRow>
             <TableCell style={{ backgroundColor: color }}>{value}</TableCell>
-            <TableCell style={{ backgroundColor: color }}>{percent}%</TableCell>
+            <TableCell style={{ backgroundColor: color }}>{percentEquals}%</TableCell>
+            <TableCell style={{ backgroundColor: color }}>{percentMore}%</TableCell>
+            <TableCell style={{ backgroundColor: color }}>{percentLess}%</TableCell>
         </TableRow>
     );
 };
